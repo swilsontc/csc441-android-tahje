@@ -20,8 +20,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             CampusAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+// --- Class 5 . Step 6: my own greeeting ---
                     Greeting(
-                        name = "Android",
+                        name = "Tahje",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
