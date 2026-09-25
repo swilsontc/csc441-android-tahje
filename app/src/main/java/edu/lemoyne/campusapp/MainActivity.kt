@@ -28,11 +28,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             CampusAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    HomeScreen(modifier = Modifier.padding(innerPadding))
-                    //Greeting(
-                    //  name = "Tahje",
-                    //modifier = Modifier.padding(innerPadding)
-                    // )
+
                 }
             }
         }
