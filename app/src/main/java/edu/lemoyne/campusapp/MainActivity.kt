@@ -20,11 +20,30 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.lemoyne.campusapp.ui.theme.CampusAppTheme
+import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.Column
+import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import android.widget.Button
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+import androidx.compose.runtime.getValue
+import androidx.compose.material3.MaterialTheme
+import android.R.attr.value
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.unit.Dp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContent {
             CampusAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -35,37 +54,78 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-// ---Class 6: Step 1: my Own Screen
+// --- Class 7: Step 1: a counter that remembers
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
-    // --- Class 6: Step 3: a column, so things stack
+fun CounterDemo() {
+    var count by remember { mutableStateOf(0) }
+
+
+    Button(
+        onClick = { count++ }
+    ) {
+        Text(text = "Tapped $count times")
+
+    }
+}
+
+
+@Composable
+fun Homescreen(modifier: Modifier = Modifier) {
+    //Class 7:
+    val trails = remember {
+        mutableStateListOf(
+            "Green Lakes State Park",
+            "Clark Reservation",
+            "Highland Forest",
+        )
+    }
+    //--- Class 7: Step 3: what's typed lives in state ---
+    var newTrail by remember { mutableStateOf(value = "") }
+    //-- Class 6: Step 3: a column
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(all = 24.dp)
+            .padding(
+                24.dp
+            )
     ) {
-        // --- Class 6: Step 4: real styling ---
+        CounterDemo()
         Text(
-            text = "Hiking Log",
+            text = "Hiking Log:",
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold
         )
-
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Trails I have walked this year",
+            text = ("Trails I have walked this year"),
             fontSize = 16.sp,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = (MaterialTheme.colorScheme.onSurfaceVariant)
         )
+        Spacer(modifier = Modifier.height(24.dp))
+// --- Class 7: Step 3:the text field
+        OutlinedTextField(
+            value = newTrail,
+            onValueChange = { newTrail = it },
+            label = { Text("Trail name") },
+            modifier = Modifier.fillMaxWidth()
+
+        )
+        Button(onClick = {
+            trails.add(newTrail)
+            newTrail = ""
+        }) {
+            Text("Add trail")
+
+        }
 
         Spacer(modifier = Modifier.height(8.dp))
+        // --Class 7 Step 2: draw whatever is in the list ---
+        Text(text = ("${trails.size} trails"), fontWeight = FontWeight.Bold)
+        for (trail in trails) {
+            Text(text = trail, fontSize = 18.sp)
+        }
 
-        Text(text = "Green Lakes State Park", fontSize = 18.sp)
-        Text(text = "Clark Reservation", fontSize = 18.sp)
-        Text(text = "Highland Forest", fontSize = 18.sp)
     }
-
-
 
     @Preview
     @Composable
