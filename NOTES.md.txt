@@ -1,0 +1,9 @@
+| I typed | What the app did | Correct? |
+|--   0   -|--  Gave an error saying its too short -|--   Yes -|
+| (nothing) | Add button greyed out | yes |
+| " " | Add button greyed out | yes     |
+| . Bikers   .. | ..     It added it to the trail list . | ..Yes. |
+|--   No   -|--  Gave an error saying its too short -|--   Yes -|
+| 32323| Gave an error saying a name cant only be numbers | yes |
+| 32323fish | Gave an error saying that it must start with a letter | yes     |
+| . AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA | ..     It added it to the trail list . | ..Yes. |
