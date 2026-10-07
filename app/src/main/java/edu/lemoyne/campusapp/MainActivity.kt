@@ -56,7 +56,11 @@ fun validateTrailName(input: String, existing: List<String>): String? {
     val name = input.trim()
     return when {
         name.isEmpty() -> "Enter a trail name"
+        name.length < 3 -> "Too short — at least 3 characters"
         name.length > MAX_NAME_LENGTH -> "Keep it to $MAX_NAME_LENGTH characters or fewer"
+        name.all { it.isDigit() } -> "A name can't beonly numbers"
+        !name.first().isLetter() -> "Start with a letter"
+        name.any { it in "<>" } -> "No < or > please"
         existing.any { it.equals(name, ignoreCase = true) } -> "\"$name\" is already on the list"
         else -> null
     }
