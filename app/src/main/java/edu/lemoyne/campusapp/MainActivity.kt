@@ -51,6 +51,20 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+const val MAX_NAME_LENGTH = 40
+fun validateTrailName(input: String, existing: List<String>): String? {
+    val name = input.trim()
+    return when {
+        name.isEmpty() -> "Enter a trail name"
+        name.length < 3 -> "Too short — at least 3 characters"
+        name.length > MAX_NAME_LENGTH -> "Keep it to $MAX_NAME_LENGTH characters or fewer"
+        name.all { it.isDigit() } -> "A name can't beonly numbers"
+        !name.first().isLetter() -> "Start with a letter"
+        name.any { it in "<>" } -> "No < or > please"
+        existing.any { it.equals(name, ignoreCase = true) } -> "\"$name\" is already on the list"
+        else -> null
+    }
+}
 
 @Composable
 fun CounterDemo() {
@@ -86,6 +100,8 @@ fun HomeScreen(modifier: Modifier = Modifier) {
     var newTrail by remember {
         mutableStateOf("")
     }
+//-- Class 8: Step 3: the error message lives in state too ---
+    var errorMessage by remember { mutableStateOf<String?>(null) }
 
     Column(
         modifier = modifier
@@ -115,29 +131,51 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             modifier = Modifier.height(24.dp)
         )
 
+        // --- Class 7 · Step 3: the text field ---
         OutlinedTextField(
             value = newTrail,
+// --- Class 8 · Step 4: the field itself pushes back ---
             onValueChange = {
-                newTrail = it
+                newTrail = it.take(MAX_NAME_LENGTH)
+                errorMessage = null
             },
-            label = {
-                Text("Trail name")
-            },
+            label = { Text("Trail name") },
+            singleLine = true,
+            isError = errorMessage != null,
             modifier = Modifier.fillMaxWidth()
         )
+// --- Class 8 · Step 3: show the problem ---
+        errorMessage?.let { message ->
+            Text(
+                text = message,
+                color = MaterialTheme.colorScheme.error,
+                fontSize = 14.sp
+            )
+        }
 
         Spacer(
             modifier = Modifier.height(8.dp)
         )
+//        --Class 8: character counter
+        Text(
+            text = "${newTrail.length} / $MAX_NAME_LENGTH"
 
+        )
+
+        // ---Class 7 · Step 4: the button changes the state---
         Button(
             onClick = {
-
-                trails.add(newTrail)
-                newTrail = ""
-
-
-            }
+// --- Class 8 · Step 3: check before you add ---
+                val problem = validateTrailName(newTrail, trails)
+                if (problem == null) {
+                    trails.add(newTrail.trim())
+                    newTrail = ""
+                } else {
+                    errorMessage = problem
+                }
+            },
+// --- Class 8 · Step 5: the sign on the door, not the lock ---
+            enabled = newTrail.isNotBlank()
         ) {
             Text("Add trail")
         }
