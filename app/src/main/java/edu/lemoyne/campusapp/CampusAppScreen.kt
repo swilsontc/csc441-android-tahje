@@ -87,6 +87,8 @@ fun CampusAppScreen(modifier: Modifier = Modifier) {
             onBack = { currentScreen = "home" },
             // --- Class 10 · Step 4: only the owner changes the list ---
             onRemove = { trails.remove(it) },
+//            --- Lab 10 * Task 2: remove all through the owner
+            onRemoveAll = { trails.clear() },
             modifier = modifier
         )
     }
@@ -215,6 +217,7 @@ fun ListScreen(
     trails: List<String>,
     onBack: () -> Unit,
     onRemove: (String) -> Unit,
+    onRemoveAll: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     // --- Class 9 · Step 6: the phone's back button goes home too ---
@@ -241,18 +244,32 @@ fun ListScreen(
         )
 
         Spacer(modifier = Modifier.height(16.dp))
+//        --- Lab 10 * Task 2: remove all through owner ---
+        if (trails.isNotEmpty()) {
+        TextButton(onClick = onRemoveAll) {
+            Text("remove all")
+        }
+    }
+    Spacer(modifier = Modifier.height(16.dp))
 
         // --- Class 10 · Step 5: the empty case ---
         if (trails.isEmpty()) {
             Text(
                 text = "No trails yet. Add one on the home screen.",
                 color = MaterialTheme.colorScheme.onSurfaceVariant
+
             )
+            Spacer(modifier = Modifier.height(8.dp))
+//            --- Lab 10 * Task 1: a way out of the empty screen ---
+            Button(onClick = onBack) {
+                Text("Back to home")
+            }
         } else {
             // --- Class 10 · Step 2: a list that scrolls ---
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
+//                --- Lab 10 * Task 2: removve all
                 items(trails) { trail ->
                     TrailRow(
                         name = trail,
@@ -315,7 +332,8 @@ fun ListScreenPreview() {
                 "Highland Forest"
             ),
             onBack = {},
-            onRemove = {}
+            onRemove = {},
+            onRemoveAll = {}
         )
     }
 }
@@ -328,7 +346,8 @@ fun ListScreenEmptyPreview() {
         ListScreen(
             trails = emptyList(),
             onBack = {},
-            onRemove = {}
+            onRemove = {},
+            onRemoveAll = {}
         )
     }
 }
