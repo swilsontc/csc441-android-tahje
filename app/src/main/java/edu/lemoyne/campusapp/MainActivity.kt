@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             CampusAppTheme{
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    CampusAppScreen = Modifier.padding(paddingValues = innerPadding)
+                    CampusAppScreen(modifier = Modifier.padding(innerPadding))
 
                 }
             }
