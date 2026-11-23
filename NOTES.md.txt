@@ -1,0 +1,12 @@
+##Week 13, Wednesday: Lab 21
+
+
+1. Using MainActivity
+2. Clicking the button calls onRefresh
+3. It keeps the screen separate from the app's data logic
+4. [] means the call worked with no items. A network failure means that something didnt load properly and it puts up an error
+
+5.Comparing items that show up in the app with the website
+
+##AI use, some of my code was missing so I used AI to fix in the missing code.
+

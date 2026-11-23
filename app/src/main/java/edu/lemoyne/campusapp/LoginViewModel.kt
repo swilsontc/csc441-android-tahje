@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 data class LoginUiState(
@@ -16,9 +17,8 @@ data class LoginUiState(
 class LoginViewModel: ViewModel() {
     private val repository = ShowcaseRepository()
     private val _state = MutableStateFlow(LoginUiState())
-    val state: StateFlow<LoginUiState> = _state
-
-    fun login(small: String, password: String, onSuccess: (String) -> Unit) {
+    val state = _state.asStateFlow()
+    fun login(email: String, password: String, onSuccess: (String) -> Unit) {
         viewModelScope.launch {
             _state.value = LoginUiState(loading = true)
             try {
@@ -27,6 +27,7 @@ class LoginViewModel: ViewModel() {
                 onSuccess(token)
             }
             catch (error: Exception) {
+                _state.value = LoginUiState(failed = true)
 
             }
 
